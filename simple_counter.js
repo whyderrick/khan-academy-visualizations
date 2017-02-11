@@ -80,12 +80,12 @@ makeCountPanel(100, 100, 1.0);
 // Actually here
 var defaultIconSize = 30;
 
-var OperationIcon(options) = {
-  this.xPos = options[x],
-  this.yPos = options[y],
-  this.type = options[type],
-  this.iconColor = options[rgbArray] || [200, 200, 200],
-  this.iconSize = options[relativeSize] * defaultIconSize || defaultIconSize,
+var OperationIcon = function(options) {
+  this.xPos = options[x];
+  this.yPos = options[y];
+  this.type = options[type];
+  this.iconColor = options[rgbArray] || [200, 200, 200];
+  this.iconSize = options[relativeSize] * defaultIconSize || defaultIconSize;
   this.coordinates = [[xPos, yPos],[xPos + this.iconSize, yPos + this.iconSize]]
 }
 
@@ -122,4 +122,51 @@ OperationIcon.prototype.makeIcon = function(){
   else {
     alert('Invalid icon type. Try "addition", "subtraction", or "equals".')
   }
-}
+};
+
+var CountPanel = function(x, y, relativeSize){
+  this.panelCount = 0;
+
+  this.xPos = options[x];
+  this.yPos = options[y];
+  this.type = options[type];
+  this.iconColor = options[rgbArray] || [200, 200, 200];
+  this.panelColor = options[panelRGBArray] || [255, 255, 255];
+  this.iconSize = options[relativeSize] * defaultIconSize || defaultIconSize;
+  this.coordinates = [[xPos, yPos],[xPos + this.iconSize * 4.2, yPos + this.iconSize]];
+
+// Set up the icon options
+  var leftIconOptions = {
+    iconColor: this.iconColor;
+    iconSize: this.iconSize;
+    x: this.xPos * 1.1;
+    y: this.yPos;
+  };
+
+  var rightIconOptions = {
+    iconColor: this.iconColor;
+    iconSize: this.iconSize;
+    x: this.xPos * 3.1;
+    y: this.yPos;
+  };
+
+  // Assign the addition and subtraction iconSize
+  leftIconOptions.type = "subtraction";
+  rightIconOptions.type = "addition";
+
+  // Create the panel view
+  this.showPanel = function() {
+    this.leftIcon = new OperationIcon(leftIconOptions);
+    this.leftIcon.makeIcon();
+
+    this.rightIcon = new OperationIcon(rightIconOptions);
+    this.rightIcon.makeIcon();
+
+    this.showCounter = function(){
+      var targetTextSize = this.iconSize * relativeSize * 0.9;
+      textSize(targetTextSize);
+      fill(0, 0, 0);
+      text(counter, xPos + this.iconSize * 1.75, yPos + targetTextSize);
+    }
+  }
+};
