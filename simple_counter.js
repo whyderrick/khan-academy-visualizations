@@ -6,7 +6,7 @@ var OperationIcon = function(options) {
   this.type = options.type;
   this.iconColorArray = options.rgbArray || [200, 200, 200];
   this.iconSize = options.relativeSize * defaultIconSize || defaultIconSize;
-  this.coordinates = [[this.xPos, this.yPos],[this.xPos + this.iconSize, this.yPos + this.iconSize]];
+  this.coordinates = [[this.x, this.y],[this.x + this.iconSize, this.y + this.iconSize]];
 };
 
 OperationIcon.prototype.makeIcon = function(){
@@ -75,7 +75,7 @@ var CountPanel = function(options){
 
   // Create the panel view
   this.showPanel = function() {
-    var originalCaller = this;
+    var origCal = this;
 
     this.leftIcon = new OperationIcon(leftIconOptions);
     this.leftIcon.makeIcon();
@@ -85,11 +85,10 @@ var CountPanel = function(options){
 
     this.showCounter = function(){
       fill(255, 0, 0);
-      var targetTextSize = originalCaller.iconSize * 0.8;
-      text(targetTextSize, 200, 200);
+      var targetTextSize = origCal.iconSize * 0.8;
       textSize(targetTextSize);
       fill(0, 0, 0);
-      text(originalCaller.panelCount, originalCaller.x + originalCaller.iconSize * 2.1, originalCaller.y + targetTextSize);
+      text(origCal.panelCount, (origCal.rightIcon.coordinates[1][0] - origCal.coordinates[0][0]) * 0.85, origCal.y + targetTextSize);
     };
     this.showCounter();
   };
@@ -101,7 +100,6 @@ var panel1options = {
 
 var panel1 = new CountPanel(panel1options);
 panel1.showPanel();
-// text(panel1.panelCount, 30, 50);
 
 var icon1options = {
     x: 200,
