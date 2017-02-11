@@ -76,3 +76,50 @@ var makeCountPanel = function(x, y, relativeSize) {
 };
 
 makeCountPanel(100, 100, 1.0);
+
+// Actually here
+var defaultIconSize = 30;
+
+var OperationIcon(options) = {
+  this.xPos = options[x],
+  this.yPos = options[y],
+  this.type = options[type],
+  this.iconColor = options[rgbArray] || [200, 200, 200],
+  this.iconSize = options[relativeSize] * defaultIconSize || defaultIconSize,
+  this.coordinates = [[xPos, yPos],[xPos + this.iconSize, yPos + this.iconSize]]
+}
+
+OperationIcon.prototype.makeIcon = function(){
+  if(this.type === "addition") {
+    strokeWeight(1); //Reinitialize default from previous drawings
+
+    fill(iconColorArray[0], iconColorArray[1], iconColorArray[2]);
+    rect(x, y, iconSize, iconSize); //Icon container
+
+    strokeWeight(3);
+    line(x + iconSize * 0.25, y + iconSize * 0.5, x + iconSize * 0.75, y + iconSize * 0.5); // Horizontal line
+    line(x + iconSize * 0.5, y + iconSize * 0.25, x + iconSize * 0.5, y + iconSize * 0.75); // Vertical line
+  }
+  if(this.type === "subtraction") {
+    strokeWeight(1); //Reinitialize default from previous drawings
+
+    fill(iconColorArray[0], iconColorArray[1], iconColorArray[2]);
+    rect(x, y, iconSize, iconSize); //Icon container
+
+    strokeWeight(3);
+    line(x + iconSize * 0.25, y + iconSize * 0.5, x + iconSize * 0.75, y + iconSize * 0.5); // Horizontal line
+  }
+  if(this.type === "equals") {
+    strokeWeight(1); //Reinitialize default from previous drawings
+
+    fill(iconColorArray[0], iconColorArray[1], iconColorArray[2]);
+    rect(x, y, iconSize, iconSize); //Icon container
+
+    strokeWeight(3);
+    line(x + iconSize * 0.25, y + iconSize * 0.4, x + iconSize * 0.75, y + iconSize * 0.4); // Horizontal line
+    line(x + iconSize * 0.25, y + iconSize * 0.6, x + iconSize * 0.75, y + iconSize * 0.6); // Horizontal line
+  }
+  else {
+    alert('Invalid icon type. Try "addition", "subtraction", or "equals".')
+  }
+}
