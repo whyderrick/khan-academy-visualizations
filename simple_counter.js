@@ -52,6 +52,7 @@ var CountPanel = function(options){
   this.iconColor = options.rgbArray || [200, 200, 200];
   this.panelColor = options.panelRGBArray || [255, 255, 255];
   this.iconSize = options.relativeSize * defaultIconSize || defaultIconSize;
+
   this.coordinates = [[this.x, this.y],[this.x + this.iconSize * 4.2, this.y + this.iconSize]];
 
 // Set up the icon options
@@ -102,7 +103,36 @@ var panel1 = new CountPanel(panel1options);
 panel1.showPanel();
 
 var icon1options = {
-    x: 200,
-    y: 200,
-    type: "equals",
+  x: 200,
+  y: 200,
+  type: "equals",
+};
+
+text(panel1.leftIcon.coordinates[0][0], 200, 200);
+text(panel1.leftIcon.coordinates[1][0], 300, 200);
+
+// draw = function() {
+//   if (mouseX > panel1.leftIcon.coordinates[0][0] &&
+//       mouseX < panel1.leftIcon.coordinates[1][0]) {
+//       rect(20,20, 20,20);
+//   }
+// };
+
+var mouseClicked = function() {
+
+  // panel1
+  var p1xStart = panel1.leftIcon.coordinates[0][0];
+  var p1xEnd = panel1.leftIcon.coordinates[1][0];
+  var p1yStart = panel1.leftIcon.coordinates[0][1];
+  var p1yEnd = panel1.leftIcon.coordinates[1][1];
+
+  if ((mouseX >= p1xStart && mouseX <= p1xEnd) &&
+       (mouseY >=p1yStart && mouseY <= p1yEnd)){
+      rect(20,20, 20,20);
+      panel1.panelCount--;
+  } else if ((mouseX >= panel1.rightIcon.coordinates[0][0] && mouseX <= panel1.rightIcon.coordinates[1][0]) &&
+  (mouseY >= panel1.rightIcon.coordinates[0][1] && mouseY <= panel1.rightIcon.coordinates[1][1])) {
+    panel1.panelCount++;
+  }
+  text(panel1.panelCount, 100, 300);
 };
