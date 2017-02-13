@@ -2,27 +2,28 @@ var defaultIconSize = 30;
 
 var primaryPanelOptions = {
   x: 10,
-  y: 50,
+  y: 20,
 };
 
 var switchSignOptions = {
   relativeSize: 1.5,
-  x: 150,
-  y: 105,
+  x: 130,
+  y: 65,
   type: "addition",
-  rgbArray: [180, 220, 0],
+  rgbArray: [187,112,0],
 };
 
 var secondaryPanelOptions = {
-  x: 120,
-  y: 170,
+  x: 175,
+  y: 125,
 };
 
 var equalSignOptions = {
   x: 300,
-  y: 220,
+  y: 175,
   type: "equals",
-  rgbArray: [],
+  relativeSize: 1.7,
+  rgbArray: [27, 202, 14],
 };
 
 var BaseBlock = function(options) {
@@ -60,6 +61,7 @@ OperationIcon.prototype.draw = function(){
   strokeWeight(1); //Reinitialize default from previous drawings
   fill(this.iconColorArray[0], this.iconColorArray[1], this.iconColorArray[2]);
   rect(this.x, this.y, this.iconSize, this.iconSize); //Icon container
+  fill(0, 0, 0);
   strokeWeight(3);
 
   if(this.type === "addition") {
@@ -166,24 +168,30 @@ primaryPanel.draw();
 var switchSign = new OperationIcon(switchSignOptions);
 switchSign.draw();
 
+// Hint Text
+fill(255, 0, 0);
+textSize(14);
+text("Click to switch between \naddition & subtraction", switchSign.xEnd + 20, switchSign.yStart, 170, 200);
+
+
 var secondaryPanel = new CountPanel(secondaryPanelOptions);
 secondaryPanel.draw();
 
+var solutionSign = new OperationIcon(equalSignOptions);
+solutionSign.draw();
+
 
 var mouseClicked = function() {
-  //Primary Panel
-  var pp = primaryPanel;
 
-  if(pp.subtractionIcon.clicked()) {
+  //Primary Panel
+  if(primaryPanel.subtractionIcon.clicked()) {
     // Make sure counter stays in positive numbers as appropriate for the lesson
-    if(pp.panelCount > 0){
-      pp.panelCount--;
-    }
-    pp.showCounter();
+    if(primaryPanel.panelCount > 0){ primaryPanel.panelCount--; }
+    primaryPanel.showCounter();
   }
-  if (pp.additionIcon.clicked()) {
-    pp.panelCount++;
-    pp.showCounter();
+  if (primaryPanel.additionIcon.clicked()) {
+    if(primaryPanel.panelCount < 10){ primaryPanel.panelCount++; }
+    primaryPanel.showCounter();
   }
 
   // Switch Sign
@@ -195,5 +203,27 @@ var mouseClicked = function() {
       switchSign.type = "addition";
       switchSign.draw();
     }
+  }
+
+  // Secondary Panel
+  if(secondaryPanel.subtractionIcon.clicked()) {
+   // Make sure counter stays in positive numbers as appropriate for the lesson
+   if(secondaryPanel.panelCount > 0) { secondaryPanel.panelCount--; }
+   secondaryPanel.showCounter();
+  }
+  if (secondaryPanel.additionIcon.clicked()) {
+    if(secondaryPanel.panelCount < 10){ secondaryPanel.panelCount++; }
+    secondaryPanel.showCounter();
+  }
+
+  // Solution Sign
+  if(solutionSign.clicked()){
+    var canvasTotal = 0;
+    if(switchSign.type === "addition") {
+      canvasTotal = primaryPanel.panelCount + secondaryPanel.panelCount;
+    } else {
+        canvasTotal = primaryPanel.panelCount - secondaryPanel.panelCount;
+    }
+    text(canvasTotal, 50, 300);
   }
 };
