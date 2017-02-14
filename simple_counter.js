@@ -171,7 +171,7 @@ switchSign.draw();
 // Hint Text
 fill(255, 0, 0);
 textSize(14);
-text("Click to switch between \naddition & subtraction", switchSign.xEnd + 20, switchSign.yStart, 170, 200);
+text("Click to switch between \naddition & subtraction", switchSign.xEnd + 20, switchSign.yStart + 5, 170, 200);
 
 
 var secondaryPanel = new CountPanel(secondaryPanelOptions);
@@ -180,7 +180,61 @@ secondaryPanel.draw();
 var solutionSign = new OperationIcon(equalSignOptions);
 solutionSign.draw();
 
+//Result Stage
+var resultStage = {
+  x: 10,
+  y: 240,
 
+  total: function() {
+    var total = 0;
+    if(switchSign.type === "addition") {
+      total = primaryPanel.panelCount + secondaryPanel.panelCount;
+    } else {
+        total = primaryPanel.panelCount - secondaryPanel.panelCount;
+    }
+    return total;
+  },
+
+  drawTokens: function() {
+    fill(232,217,40);
+    var total = this.total();
+    var drawingX = this.x + 50;
+    var drawingY = this.y + 20;
+    var xIncrement = 35;
+    var yIncrement = 40;
+    var maxRowLength = 6;
+
+    var makeToken = function(){ ellipse(drawingX, drawingY, 25, 25); };
+
+    // Build rows capped at 5 items
+    var fullRows = floor(total/maxRowLength);
+
+    for(var i = 0; i < fullRows; i++) {
+      for(var j = 0; j < maxRowLength; j++){
+        makeToken();
+        drawingX += xIncrement;
+      }
+      drawingX = this.x + 50;
+      drawingY += yIncrement;
+    }
+    // The remainder
+    for(var k = 0; k < total % maxRowLength; k++) {
+      makeToken();
+      drawingX += xIncrement;
+    }
+
+  },
+
+  draw: function() {
+    // Draw stage rectangle
+    fill(15, 45, 182);
+    rect(this.x, this.y, 380, 150);
+    this.drawTokens();
+    fill(255, 255, 255);
+  },
+};
+
+// resultStage.draw();
 var mouseClicked = function() {
 
   //Primary Panel
@@ -190,7 +244,7 @@ var mouseClicked = function() {
     primaryPanel.showCounter();
   }
   if (primaryPanel.additionIcon.clicked()) {
-    if(primaryPanel.panelCount < 10){ primaryPanel.panelCount++; }
+    if(primaryPanel.panelCount < 9){ primaryPanel.panelCount++; }
     primaryPanel.showCounter();
   }
 
@@ -208,22 +262,18 @@ var mouseClicked = function() {
   // Secondary Panel
   if(secondaryPanel.subtractionIcon.clicked()) {
    // Make sure counter stays in positive numbers as appropriate for the lesson
-   if(secondaryPanel.panelCount > 0) { secondaryPanel.panelCount--; }
-   secondaryPanel.showCounter();
+    if(secondaryPanel.panelCount > 0) { secondaryPanel.panelCount--; }
+    secondaryPanel.showCounter();
   }
   if (secondaryPanel.additionIcon.clicked()) {
-    if(secondaryPanel.panelCount < 10){ secondaryPanel.panelCount++; }
+    if(secondaryPanel.panelCount < 9){ secondaryPanel.panelCount++; }
     secondaryPanel.showCounter();
   }
 
   // Solution Sign
   if(solutionSign.clicked()){
     var canvasTotal = 0;
-    if(switchSign.type === "addition") {
-      canvasTotal = primaryPanel.panelCount + secondaryPanel.panelCount;
-    } else {
-        canvasTotal = primaryPanel.panelCount - secondaryPanel.panelCount;
-    }
-    text(canvasTotal, 50, 300);
+    resultStage.draw();
+    // text(canvasTotal, 50, 300);
   }
 };
