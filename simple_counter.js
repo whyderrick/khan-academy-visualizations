@@ -203,7 +203,6 @@ var resultStage = {
   },
 
   drawTokens: function() {
-    fill(232,217,40);
     var total = this.total();
     var drawingX = this.x + 50;
     var drawingY = this.y + 20;
@@ -211,7 +210,24 @@ var resultStage = {
     var yIncrement = 40;
     var maxRowLength = 6;
 
-    var makeToken = function(){ ellipse(drawingX, drawingY, 25, 25); };
+    var makeToken = function(){
+      fill(232,217,40);
+      var faceSize = 32;
+      var eyeSize = faceSize/4;
+      var mouthSize = faceSize/2;
+
+      ellipse(drawingX, drawingY, faceSize, faceSize);
+
+      // Eyes
+      fill(0, 0 ,0);
+      ellipse(drawingX - eyeSize, drawingY - eyeSize * 0.75, eyeSize, eyeSize);
+      ellipse(drawingX + eyeSize, drawingY - eyeSize * 0.75, eyeSize, eyeSize);
+
+      // Mouth
+      fill(255,0, 0);
+      ellipse(drawingX + eyeSize/2, drawingY + faceSize * 0.25, mouthSize, mouthSize);
+
+     };
     // Build rows capped at maxRowLength
     var fullRows = floor(total/maxRowLength);
 
@@ -242,7 +258,8 @@ var resultStage = {
       fill(233, 7, 21);
       rect(this.x, this.y, 380, 150);
       fill(255,255,255);
-      text("Whoops! That number is too small (it's a negative number). Try changing the minus sign to a plus.", this.x + 20, this.y + 30, 350, 200);
+      textSize(18);
+      text("Whoops! That number is too small (it's a negative number). Try changing the minus sign to a plus sign.", this.x + 20, this.y + 30, 350, 200);
     }
   },
 };
