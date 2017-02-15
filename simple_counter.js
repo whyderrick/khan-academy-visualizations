@@ -212,8 +212,7 @@ var resultStage = {
     var maxRowLength = 6;
 
     var makeToken = function(){ ellipse(drawingX, drawingY, 25, 25); };
-
-    // Build rows capped at 5 items
+    // Build rows capped at maxRowLength
     var fullRows = floor(total/maxRowLength);
 
     for(var i = 0; i < fullRows; i++) {
@@ -229,15 +228,22 @@ var resultStage = {
       makeToken();
       drawingX += xIncrement;
     }
-
   },
 
   draw: function() {
     // Draw stage rectangle
-    fill(15, 45, 182);
-    rect(this.x, this.y, 380, 150);
-    this.drawTokens();
-    fill(255, 255, 255);
+    if(this.total() >= 0){
+      fill(15, 45, 182);
+      rect(this.x, this.y, 380, 150);
+      this.drawTokens();
+      fill(255, 255, 255);
+    } else {
+      // Error messaging for negative numbers
+      fill(233, 7, 21);
+      rect(this.x, this.y, 380, 150);
+      fill(255,255,255);
+      text("Whoops! That number is too small (it's a negative number). Try changing the minus sign to a plus.", this.x + 20, this.y + 30, 350, 200);
+    }
   },
 };
 
