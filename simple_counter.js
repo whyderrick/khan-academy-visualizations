@@ -180,6 +180,13 @@ secondaryPanel.draw();
 var solutionSign = new OperationIcon(equalSignOptions);
 solutionSign.draw();
 
+// Solution Sign Hint Text
+fill(255, 0, 0);
+textSize(14);
+text("Click to show the answer!", solutionSign.xStart - 120, solutionSign.yStart + 15, 115, 100);
+fill(255, 255, 255);
+
+
 //Result Stage
 var resultStage = {
   x: 10,
