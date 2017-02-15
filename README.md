@@ -1,4 +1,4 @@
-Khan Academy Processing Demos
+#Khan Academy Visualizations
 
 This repo exists to provide version control to illustrations for Khan Academy concepts. Each of the files here represents a different project built for the platform.
 
